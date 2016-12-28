@@ -11,9 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <inttypes.h>
-//#include <cutils/properties.h>
-
-//#include "camera_dbg.h"
+#include <unistd.h> 
 #include "memleak.h"
 
 #define MEMLEAK_FLAG
@@ -133,7 +131,7 @@ static _Unwind_Reason_Code unwind_func_call(struct _Unwind_Context *context, voi
   return (p_state->stack_count >= p_state->max_depth) ? _URC_END_OF_STACK : _URC_NO_REASON;
 }
 
-static int mmcamera_stacktrace(uintptr_t *addrs,
+static int function_stacktrace(uintptr_t *addrs,
   size_t max_entries)
 {
   struct stack_crawl_state_t state;
@@ -159,7 +157,7 @@ static inline void add(hdr_t *hdr, size_t size)
   hdr->next = 0;
 
   if (hdr->alloc_traced) {
-    hdr->bt_depth = mmcamera_stacktrace(hdr->bt, MAX_BACKTRACE_DEPTH);
+    hdr->bt_depth = function_stacktrace(hdr->bt, MAX_BACKTRACE_DEPTH);
     hdr->next = last;
     if (last)
       last->prev = hdr;
@@ -245,7 +243,9 @@ void print_allocated_memory()
   printf("%d bytes non freed memory.\n", leaks_bytes);
   pthread_mutex_lock(&memory_mutex);
 
-  p_map_info = lib_map_create(getpid());
+  pid_t c_pid = getpid();
+
+  p_map_info = lib_map_create(c_pid);
   del = last;
   while(del) {
     cnt_all++;
@@ -406,17 +406,20 @@ void disable_memleak_trace(int signum __unused)
 static __attribute__((constructor)) void init(void)
 {
   char prop[100];
-  int enable_memleak = 0;
+  int enable_memleak = 1;
 
   pthread_mutex_init(&server_memleak_mut, NULL);
   pthread_cond_init(&server_memleak_con, NULL);
-
+  
   /*property_get("persist.camera.memleak.enable", prop, "0");*/
   /*enable_memleak = atoi(prop);*/
   /*property_get("persist.camera.memleak.min", prop, "50");*/
 /*  minimum = atoi(prop);*/
   //eaks_bytes = 0;
   last = NULL;
+
+  minimum = 50;
+
 
   printf("memleak lib init.\n");
   #ifdef ENABLE_SIG
