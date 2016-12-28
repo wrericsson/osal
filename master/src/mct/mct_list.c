@@ -1,12 +1,3 @@
-/* mct_list.c
- *
- * This file contains the helper methods and implementation for managing
- * lists.
- *
- * Copyright (c) 2012-2016 Qualcomm Technologies, Inc. All Rights Reserved.
- * Qualcomm Technologies Proprietary and Confidential.
- */
-
 #include "mtype.h"
 #include "mct_list.h"
 

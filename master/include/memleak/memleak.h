@@ -1,10 +1,3 @@
-/* memleak.h
- *
- * Copyright (c) 2016 Qualcomm Technologies, Inc.
- * All Rights Reserved.
- * Qualcomm Technologies Proprietary and Confidential.
- */
-
 #ifndef MEMLEAK_H
 #define MEMLEAK_H
 

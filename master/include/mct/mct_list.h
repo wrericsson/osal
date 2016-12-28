@@ -1,8 +1,3 @@
-/* mct_list.h
- *
- * Copyright (c) 2012-2013 Qualcomm Technologies, Inc. All Rights Reserved.
- * Qualcomm Technologies Proprietary and Confidential.
- */
 
 #ifndef __MCT_LIST_H__
 #define __MCT_LIST_H__

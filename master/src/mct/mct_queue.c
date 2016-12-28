@@ -1,12 +1,3 @@
-/* mct_queue.c
- *
- * This file contains the helper methods and implementation for managing
- * queues.
- *
- * Copyright (c) 2012-2013 Qualcomm Technologies, Inc. All Rights Reserved.
- * Qualcomm Technologies Proprietary and Confidential.
- */
-
 #include "mtype.h"
 #include "mct_queue.h"
 

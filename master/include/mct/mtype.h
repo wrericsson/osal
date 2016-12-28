@@ -1,9 +1,3 @@
-/* mtype.h
- *
- * Copyright (c) 2012, 2016 Qualcomm Technologies, Inc. All Rights Reserved.
- * Qualcomm Technologies Proprietary and Confidential.
- */
-
 #ifndef __M_TYPE_H__
 #define __M_TYPE_H__
 

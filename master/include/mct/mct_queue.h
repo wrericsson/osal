@@ -1,8 +1,3 @@
-/* mct_queue.h
- * Copyright (c) 2013 Qualcomm Technologies, Inc. All Rights Reserved.
- * Qualcomm Technologies Proprietary and Confidential.
- */
-
 #ifndef __MCT_QUEUE_H__
 #define __MCT_QUEUE_H__
 
