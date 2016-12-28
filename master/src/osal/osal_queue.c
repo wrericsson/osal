@@ -1,7 +1,7 @@
 #include "mtype.h"
-#include "mct_queue.h"
+#include "osal_queue.h"
 
-void mct_queue_init(mct_queue_t *q)
+void osal_queue_init(osal_queue_t *q)
 {
   if (!q)
     return;
@@ -10,44 +10,44 @@ void mct_queue_init(mct_queue_t *q)
   q->length = 0;
 }
 
-void mct_queue_free(mct_queue_t *q)
+void osal_queue_free(osal_queue_t *q)
 {
   if (!q)
     return;
 
-  mct_list_free_list(q->head);
+  osal_list_free_list(q->head);
   free(q);
   q = NULL;
 }
 
-void mct_queue_free_all(mct_queue_t *q, mct_queue_traverse_func traverse)
+void osal_queue_free_all(osal_queue_t *q, osal_queue_traverse_func traverse)
 {
   if (!q)
     return;
 
-  mct_list_free_all(q->head, traverse);
+  osal_list_free_all(q->head, traverse);
   free(q);
   q = NULL;
 }
 
-void mct_queue_traverse(mct_queue_t *q, mct_queue_traverse_func traverse,
+void osal_queue_traverse(osal_queue_t *q, osal_queue_traverse_func traverse,
   void *data)
 {
   if (!q || !traverse)
     return;
 
-  mct_list_traverse(q->head, traverse, data);
+  osal_list_traverse(q->head, traverse, data);
 }
 
 /**
  *
  **/
-void mct_queue_push_tail(mct_queue_t *q, void *data)
+void osal_queue_push_tail(osal_queue_t *q, void *data)
 {
   if (!q)
     return;
 
-  q->tail = mct_list_append(q->tail, data, NULL, NULL);
+  q->tail = osal_list_append(q->tail, data, NULL, NULL);
 
   if (!q->tail)
     return;
@@ -60,13 +60,13 @@ void mct_queue_push_tail(mct_queue_t *q, void *data)
   q->length++;
 }
 
-void *mct_queue_pop_head(mct_queue_t *q)
+void *osal_queue_pop_head(osal_queue_t *q)
 {
   if (!q)
     return NULL;
 
   if (q->head) {
-    mct_list_t *node = q->head;
+    osal_list_t *node = q->head;
     void    *data = node->data;
 
     if (node->next) {
@@ -92,13 +92,13 @@ void *mct_queue_pop_head(mct_queue_t *q)
   return NULL;
 }
 
-/*  mct_queue_look_at_head
+/*  osal_queue_look_at_head
  *
  *  Description:
  *  Returns the data from the head of the queue.
  *  Does not add/remove anything in queue.
  **/
-void *mct_queue_look_at_head(mct_queue_t *q)
+void *osal_queue_look_at_head(osal_queue_t *q)
 {
   if (!q)
     return NULL;
@@ -108,12 +108,12 @@ void *mct_queue_look_at_head(mct_queue_t *q)
     return NULL;
 }
 
-void mct_queue_flush(mct_queue_t *q, mct_queue_traverse_func traverse)
+void osal_queue_flush(osal_queue_t *q, osal_queue_traverse_func traverse)
 {
   if (!q)
     return;
 
-  mct_list_free_all(q->head, traverse);
-  mct_queue_init(q);
+  osal_list_free_all(q->head, traverse);
+  osal_queue_init(q);
   return;
 }

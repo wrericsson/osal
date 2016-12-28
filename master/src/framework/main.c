@@ -12,7 +12,7 @@
 
 #include <stdio.h>
 #include "mtype.h"
-#include "mct_list.h"
+#include "osal_list.h"
 
 boolean print_alphabet_list(void *data, void *user_data __unused)
 {
@@ -26,7 +26,7 @@ boolean print_alphabet_list(void *data, void *user_data __unused)
 
 int main(int argc __unused, char * argv[] __unused)
 {
-	mct_list_t *char_list = NULL;
+	osal_list_t *char_list = NULL;
 	char alphabet;
 	char alph[10];
 	int i;
@@ -35,26 +35,26 @@ int main(int argc __unused, char * argv[] __unused)
 
 	for (i = 0; i < 10; i++) {
 		alph[i] = alphabet;
-		char_list = mct_list_append(char_list, &alph[i], NULL, NULL);
+		char_list = osal_list_append(char_list, &alph[i], NULL, NULL);
 		alphabet++;
 	}
 
-	mct_list_traverse(char_list, print_alphabet_list, NULL);
+	osal_list_traverse(char_list, print_alphabet_list, NULL);
 	printf("\n");
 
-	char_list = mct_list_remove(char_list, &alph[2]);
-	mct_list_traverse(char_list, print_alphabet_list, NULL);
+	char_list = osal_list_remove(char_list, &alph[2]);
+	osal_list_traverse(char_list, print_alphabet_list, NULL);
 	printf("\n");
 
-	char_list = mct_list_remove(char_list, &alph[0]);
-	mct_list_traverse(char_list, print_alphabet_list, NULL);
+	char_list = osal_list_remove(char_list, &alph[0]);
+	osal_list_traverse(char_list, print_alphabet_list, NULL);
 	printf("\n");
 
-	char_list = mct_list_remove(char_list, &alph[9]);
-	mct_list_traverse(char_list, print_alphabet_list, NULL);
+	char_list = osal_list_remove(char_list, &alph[9]);
+	osal_list_traverse(char_list, print_alphabet_list, NULL);
 	printf("\n");
 
-	mct_list_free_list(char_list);
+	osal_list_free_list(char_list);
 
 	return 0;
 }
