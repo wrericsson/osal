@@ -1,4 +1,6 @@
+#include <signal.h>
 #include <dlfcn.h>
+#include <unistd.h> 
 #include <stdio.h>
 #include <ctype.h>
 #include <unwind.h>
@@ -28,19 +30,19 @@ struct fdlist_t {
 } __attribute__((packed));
 typedef struct fdlist_t fdlist_t;
 
-struct map_info_holder {
-  char *name;
-  struct map_info_holder* next;
-  uintptr_t start;
-  uintptr_t end;
-};
+/*struct map_info_holder {*/
+  /*char *name;*/
+  /*struct map_info_holder* next;*/
+  /*uintptr_t start;*/
+  /*uintptr_t end;*/
+/*};*/
 
-struct stack_crawl_state_t {
-  uintptr_t *addr;
-  int skip;
-  size_t stack_count;
-  size_t max_depth;
-};
+/*struct stack_crawl_state_t {*/
+  /*uintptr_t *addr;*/
+  /*int skip;*/
+  /*size_t stack_count;*/
+  /*size_t max_depth;*/
+/*};*/
 
 pthread_mutex_t osal_debug_fdleak_mut = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t osal_debug_fdleak_con = PTHREAD_COND_INITIALIZER;
@@ -84,8 +86,11 @@ void fdleak_dump_list()
   struct map_info_holder *p_map_info;
   struct fdlist_t *temp;
   temp = head;
+  
   pthread_mutex_lock(&osal_debug_fdleak_mut);
-  p_map_info = lib_map_create(getpid());
+  
+  pid_t c_pid = getpid();
+  p_map_info = lib_map_create(c_pid);
   while (temp != NULL) {
     printf("leaked fd %d\n",temp->fd);
     print_backtrace(p_map_info, temp->bt, temp->bt_depth);
@@ -104,7 +109,7 @@ int __open(const char* dev_name, int flags, ...)
   if ((flags & O_CREAT) != 0) {
     va_list args;
     va_start(args, flags);
-    mode = (mode_t)va_arg(args,mode_t);
+    mode = (mode_t)va_arg(args,int);
     va_end(args);
   }
   fd_value = open(dev_name, flags, mode);

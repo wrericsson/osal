@@ -1,9 +1,3 @@
-/* override_malloc.cpp
- * Copyright (c) 2016 Qualcomm Technologies, Inc.
- * All Rights Reserved.
- * Confidential and Proprietary - Qualcomm Technologies, Inc.
- */
-
 #include <dlfcn.h>
 #include <stdio.h>
 #include <ctype.h>
@@ -14,41 +8,6 @@
 #include <unistd.h> 
 #include "memleak.h"
 
-#define MEMLEAK_FLAG
-#define ENABLE_SIG 1
-#define SIG_PRINT 28
-#define SIG_ENABLE 29
-#define SIG_DISABLE 30
-
-#define MAX_BACKTRACE_DEPTH 15
-#define MAX_FUNC_STRING_LENGHT 100
-#define MAGIC_ALLOC 0x7abc0fb5
-#define MAGIC_FREE 0x087cbc8a
-
-struct hdr_t {
-  int alloc_traced;
-  unsigned int size;
-  struct hdr_t *prev;
-  struct hdr_t *next;
-  uintptr_t bt[MAX_BACKTRACE_DEPTH];
-  int bt_depth;
-  int allocated;
-} __attribute__((packed));
-typedef struct hdr_t hdr_t;
-
-struct map_info_holder {
-  char *name;
-  struct map_info_holder* next;
-  uintptr_t start;
-  uintptr_t end;
-};
-
-struct stack_crawl_state_t {
-  uintptr_t *addr;
-  int skip;
-  size_t stack_count;
-  size_t max_depth;
-};
 
 static pthread_mutex_t memory_mutex = PTHREAD_MUTEX_INITIALIZER;
 static unsigned int leaks_bytes = 0;
@@ -131,7 +90,7 @@ static _Unwind_Reason_Code unwind_func_call(struct _Unwind_Context *context, voi
   return (p_state->stack_count >= p_state->max_depth) ? _URC_END_OF_STACK : _URC_NO_REASON;
 }
 
-static int function_stacktrace(uintptr_t *addrs,
+int function_stacktrace(uintptr_t *addrs,
   size_t max_entries)
 {
   struct stack_crawl_state_t state;
@@ -204,7 +163,7 @@ static struct map_info_holder *lib_map_parse_line(char* line)
 }
 
 
-static struct map_info_holder *lib_map_create(pid_t pid) {
+struct map_info_holder *lib_map_create(pid_t pid) {
 
   struct map_info_holder *map_list = NULL;
   struct map_info_holder *map_holder;

@@ -11,18 +11,6 @@
 
 #define SOF_RECOVER 0
 
-/** Name:dump_list_of_daemon_fd()
- *
- *  Arguments/Fields:
- *    @
- *    @
- *
- *  Return:
- *
- *  Description: Dump list of the fd's of mm-qcamera-daemon process
- *                   and restarts camera daemon.
- *
- **/
 void dump_list_of_daemon_fd()
 {
   pid_t c_pid;
